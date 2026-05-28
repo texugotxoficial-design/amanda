@@ -1,0 +1,7 @@
+# Ignorar arquivos locais temporários e de compilação
+projeto-amanda.zip
+node_modules/
+.DS_Store
+Thumbs.db
+.system_generated/
+*.log

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a0b2e">
+  <title>Para o Meu Raio de Sol ☀️</title>
+  
+  <!-- Fontes do Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Biblioteca de Confetes -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Estilos principais -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Elemento de Fundo Interativo -->
+  <div class="bg-glow"></div>
+  <div class="particles-container" id="particles"></div>
+
+  <!-- 1. TELA DE BLOQUEIO (Lock Screen / Entrada) -->
+  <section class="lock-screen" id="lockScreen">
+    <div class="lock-header">
+      <div class="date-time" id="dateTime">00:00</div>
+      <div class="date-today" id="dateToday">Quinta-feira, 30 de Abril</div>
+    </div>
+    
+    <div class="lock-body">
+      <div class="sun-icon-container animate-pulse">
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="5" />
+          <line x1="12" y1="1" x2="12" y2="3" />
+          <line x1="12" y1="21" x2="12" y2="23" />
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+          <line x1="1" y1="12" x2="3" y2="12" />
+          <line x1="21" y1="12" x2="23" y2="12" />
+          <line x1="4.22" y1="19.72" x2="5.64" y2="18.3" />
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        </svg>
+      </div>
+      <h2>Olá, meu Raio de Sol ☀️</h2>
+      <p class="lock-hint">Você tem mensagens de carinho te esperando...</p>
+    </div>
+
+    <div class="lock-footer">
+      <!-- Slider Container com ID para controle -->
+      <div class="unlock-slider-container" id="sliderContainer">
+        <div class="unlock-slider-track">
+          <div class="unlock-slider-handle" id="sliderHandle">
+            <span class="arrow-right">→</span>
+          </div>
+          <span class="unlock-text">Deslize para abrir</span>
+        </div>
+      </div>
+      
+      <!-- Container da Senha (escondido inicialmente) -->
+      <div class="password-container hidden" id="passwordContainer">
+        <div class="password-card glass animate-scale">
+          <span class="lock-icon">🔒</span>
+          <h3>Digite a Palavra-Chave</h3>
+          <p class="password-hint-text">Dica: O que guia o nosso encontro? ✨</p>
+          <div class="password-form-group">
+            <input type="text" id="passwordInput" placeholder="Sua resposta..." class="password-input" autocomplete="off">
+            <button class="btn btn-primary" id="btnUnlock" onclick="checkPassword()">Confirmar</button>
+          </div>
+          <p class="error-text hidden" id="passwordError">Palavra-chave incorreta. Tente novamente! ❤️</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. APLICATIVO PRINCIPAL -->
+  <main class="app-container hidden" id="mainApp">
+    
+    <!-- Header Romântico -->
+    <header class="app-header">
+      <div class="profile-card glass">
+        <div class="avatar-pair">
+          <div class="avatar amanda">☀️</div>
+          <div class="love-heart-divider">❤</div>
+          <div class="avatar rafael">🧡</div>
+        </div>
+        <h1 class="gradient-text">Meu Raio de Sol</h1>
+        <p class="subtitle">Um espacinho simples de carinho, feito pra tentar colocar um sorriso no seu rosto hoje! ☺️✨</p>
+      </div>
+    </header>
+
+    <!-- Ilustração do Sunset Road Trip -->
+    <section class="banner-illustration glass">
+      <img src="sunset_road.png" alt="Nossa Estrada" class="banner-img" onerror="this.src='https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80'">
+      <div class="banner-overlay">
+        <h3>"Existe um ditado... Quando estamos falando com quem a gente gosta, a hora passa mais rápido."</h3>
+      </div>
+    </section>
+
+    <!-- Seção 1: Modo Romântico Extra -->
+    <section class="manga-section glass card-spacing">
+      <div class="section-title">
+        <span class="title-icon">💖</span>
+        <h2>Modo Sintonia Extra</h2>
+      </div>
+      <p>Que tal deixar o ambiente ainda mais romântico e aconchegante para ler as mensagens?</p>
+      <div class="toggle-card">
+        <span class="toggle-label">Ativar Brilho do Coração</span>
+        <button class="toggle-btn" id="mangaToggle">
+          <span class="toggle-circle"></span>
+        </button>
+      </div>
+      <div class="toggle-feedback hidden" id="mangaFeedback">
+        🌸 <strong>Atmosfera Romântica Ativada!</strong> O pôr do sol brilha mais forte por você.
+      </div>
+    </section>
+
+    <!-- Seção 2: Qualidades e Elogios (Sintonia Fina) -->
+    <section class="sintonia-section card-spacing">
+      <div class="section-title text-center">
+        <span class="title-icon">✨</span>
+        <h2>Minha Admiração por Você</h2>
+        <p class="section-subtitle">O que eu vejo e mais admiro no seu jeito único de ser. Toque para revelar:</p>
+      </div>
+
+      <div class="sintonia-grid">
+        <!-- Elogio 1: Beleza -->
+        <div class="sintonia-card glass" onclick="revealCard(this)">
+          <div class="card-front">
+            <span class="card-icon">🌸</span>
+            <h3>Sua Beleza</h3>
+            <span class="reveal-hint">Toque para ler</span>
+          </div>
+          <div class="card-back">
+            <h4>Aquele Brilho Único</h4>
+            <p>"Tenho que confessar, você é muito bonita. Não acredito que nunca tinha te reparado na rua antes... com certeza eu me lembraria! 🫣"</p>
+          </div>
+        </div>
+
+        <!-- Elogio 2: Presença -->
+        <div class="sintonia-card glass" onclick="revealCard(this)">
+          <div class="card-front">
+            <span class="card-icon">✨</span>
+            <h3>Sua Presença</h3>
+            <span class="reveal-hint">Toque para ler</span>
+          </div>
+          <div class="card-back">
+            <h4>Presença Doce</h4>
+            <p>"Sua presença traz uma energia tão leve e gostosa! Saber que você está por perto torna qualquer momento do dia muito mais alegre e especial. 🥺✨"</p>
+          </div>
+        </div>
+
+        <!-- Elogio 3: Jeito Centrado -->
+        <div class="sintonia-card glass" onclick="revealCard(this)">
+          <div class="card-front">
+            <span class="card-icon">🕊️</span>
+            <h3>Seu Jeito Doce</h3>
+            <span class="reveal-hint">Toque para ler</span>
+          </div>
+          <div class="card-back">
+            <h4>Calma & Centrada</h4>
+            <p>"Você parece ser bem centrada, calma... um tipo de presença que traz uma paz gigante no meio da correria do dia a dia! 🕊️"</p>
+          </div>
+        </div>
+
+        <!-- Elogio 4: Encantamento -->
+        <div class="sintonia-card glass" onclick="revealCard(this)">
+          <div class="card-front">
+            <span class="card-icon">💖</span>
+            <h3>Meu Encanto</h3>
+            <span class="reveal-hint">Toque para ler</span>
+          </div>
+          <div class="card-back">
+            <h4>Sintonia Leve</h4>
+            <p>"Realmente estou gostando muito de te conhecer melhor. É engraçado como a gente se dá bem de forma tão leve e natural! 🫠"</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção 3: Girassol do Dia -->
+    <section class="sunflower-section glass card-spacing">
+      <div class="section-title">
+        <span class="title-icon">🌻</span>
+        <h2>O Girassol do Dia</h2>
+      </div>
+      <p>Um pequeno girassol digital feito pra te dar um bom dia especial. Toque para fazê-lo florescer!</p>
+      
+      <div class="sunflower-container" id="sunflowerContainer" onclick="bloomSunflower()">
+        <div class="sunflower-graphic" id="sunflowerGraphic">🌻</div>
+      </div>
+      
+      <div class="flower-message hidden" id="flowerMessage">
+        🌻 <em>"Que seu dia seja cheio de luz, sorrisos bobos e aquela paz gostosa no coração. Você é incrível!"</em>
+      </div>
+    </section>
+
+    <!-- Seção 4: Caixinha de Carinho Interativa -->
+    <section class="cheque-game-section glass card-spacing">
+      <div class="section-title">
+        <span class="title-icon">🎁</span>
+        <h2>Um Carinho para Você</h2>
+      </div>
+      <p class="game-instruction">Toque no presente abaixo para abrir uma mensagem carinhosa e direta de coração para coração:</p>
+      
+      <div class="game-area" id="gameArea">
+        <div class="cheque-card" id="chequeCard" style="background: linear-gradient(135deg, var(--sunset-orange), var(--sunset-pink)); color: white; border: none; align-items: center; justify-content: center; font-size: 1rem; border-radius: 20px;">
+          <div style="font-size: 3rem; margin-bottom: 5px;">🎁</div>
+          <span style="font-family: var(--font-title); font-weight: bold; letter-spacing: 0.5px;">Toque para Abrir</span>
+        </div>
+      </div>
+
+      <div class="game-controls" style="justify-content: center;">
+        <button class="btn btn-primary animate-pulse" id="btnSocorro" onclick="triggerSocorro()" style="max-width: 250px;">💝 Receber Abraço Virtual</button>
+      </div>
+
+      <div class="game-success hidden" id="gameSuccess" style="background: rgba(244, 63, 94, 0.08); border-color: rgba(244, 63, 94, 0.2);">
+        <h4 style="color: var(--sunset-pink);">💌 Mensagem Guardada no Coração:</h4>
+        <p id="carinhoMensagem" style="font-style: italic; font-size: 0.9rem; line-height: 1.5; color: var(--text-primary);"></p>
+      </div>
+    </section>
+
+    <!-- Seção 4: Carrossel do Chat Carinhoso -->
+    <section class="chat-section glass card-spacing">
+      <div class="section-title">
+        <span class="title-icon">💬</span>
+        <h2>Nossos Momentos Doces</h2>
+      </div>
+      <p>A sintonia que acontece de forma natural e inegável... ✨</p>
+      
+      <div class="chat-container">
+        <div class="chat-slides" id="chatSlides">
+          <!-- Slide 1 -->
+          <div class="chat-slide active" style="align-items: center; justify-content: center; text-align: center; padding: 10px;">
+            <div class="poetic-quote">
+              <span class="quote-symbol">✨</span>
+              <p class="quote-text">"Dizem que quando a conversa é boa, o tempo simplesmente desaparece. Com você, cada minuto parece passar rápido demais... uma sintonia leve e natural."</p>
+              <span class="quote-author">Sobre o Tempo Voar...</span>
+            </div>
+          </div>
+          <!-- Slide 2 -->
+          <div class="chat-slide" style="align-items: center; justify-content: center; text-align: center; padding: 10px;">
+            <div class="poetic-quote">
+              <span class="quote-symbol">☀️</span>
+              <p class="quote-text">"Tudo acontece exatamente no momento em que deve acontecer. Nossos caminhos se cruzaram de forma leve e natural, provando que as melhores coisas da vida chegam de surpresa."</p>
+              <span class="quote-author">Sobre o Destino...</span>
+            </div>
+          </div>
+          <!-- Slide 3 -->
+          <div class="chat-slide" style="align-items: center; justify-content: center; text-align: center; padding: 10px;">
+            <div class="poetic-quote">
+              <span class="quote-symbol">🧡</span>
+              <p class="quote-text">"Conversar com você traz uma leveza incrível para o dia a dia. É a certeza de ter alguém especial que, mesmo na correria, consegue colocar um sorriso espontâneo no meu rosto."</p>
+              <span class="quote-author">Sobre Sorrisos Leves...</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="chat-nav">
+          <button class="nav-arrow prev" onclick="moveSlide(-1)">◀</button>
+          <div class="chat-dots" id="chatDots">
+            <span class="dot active" onclick="goToSlide(0)"></span>
+            <span class="dot" onclick="goToSlide(1)"></span>
+            <span class="dot" onclick="goToSlide(2)"></span>
+          </div>
+          <button class="nav-arrow next" onclick="moveSlide(1)">▶</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção: Nossos Bilhetes de Carinho -->
+    <section class="bilhetes-section glass card-spacing">
+      <div class="section-title">
+        <span class="title-icon">📌</span>
+        <h2>Lembretes de Luz</h2>
+      </div>
+      <p>Pequenos bilhetes virtuais com pensamentos de carinho para você ler quando quiser um abraço rápido:</p>
+      
+      <div class="bilhetes-grid">
+        <div class="bilhete-card">
+          <span class="bilhete-pin">📌</span>
+          <p class="bilhete-text">"Nunca se esqueça de que o seu sorriso tem o poder de mudar o dia de qualquer pessoa para muito melhor!"</p>
+        </div>
+        <div class="bilhete-card">
+          <span class="bilhete-pin">📌</span>
+          <p class="bilhete-text">"Que você tenha leveza no seu dia. Respira fundo, faça tudo no seu tempo e com a doçura de sempre."</p>
+        </div>
+        <div class="bilhete-card">
+          <span class="bilhete-pin">📌</span>
+          <p class="bilhete-text">"Mesmo na correria, saiba que tem alguém aqui torcendo sempre pela sua felicidade e pelo seu sucesso!"</p>
+        </div>
+        <div class="bilhete-card">
+          <span class="bilhete-pin">📌</span>
+          <p class="bilhete-text">"Você é uma pessoa rara, com uma energia boa que ilumina qualquer lugar. Nunca duvide do seu valor."</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Seção 5: Convite do 1% (Destino Garantido) -->
+    <section class="convite-section glass card-spacing">
+      <div class="sun-icon-big animate-spin-slow" style="color: var(--sunset-pink);">❤️</div>
+      <h2 class="gradient-text text-center">Nossa Sintonia Mágica...</h2>
+      <p class="text-center">Tudo mostra que o destino nos uniu no tempo certo. Que tal continuarmos escrevendo essa história com carinho?</p>
+      
+      <div class="invite-choices">
+        <button class="btn btn-primary btn-invite" onclick="acceptInvite('romantic')">
+          💝 Aceitar meu Carinho & Cuidado
+        </button>
+        <button class="btn btn-primary btn-invite" onclick="acceptInvite('smile')">
+          🥰 Deixar o Coração Sorrir!
+        </button>
+      </div>
+
+      <!-- Modal de Resposta Romântica -->
+      <div class="modal hidden" id="inviteModal">
+        <div class="modal-content glass animate-scale" style="border-color: var(--sunset-pink); box-shadow: 0 10px 40px rgba(244, 63, 94, 0.25);">
+          <h3 style="color: var(--sunset-pink);">Sintonia 100% Confirmada! 😍</h3>
+          <p id="modalMessage">Prometo estar sempre aqui para te apoiar, te ouvir, te fazer sorrir e cuidar de você em cada detalhe. Obrigado por ser esse raio de sol único na minha vida! ☀️🧡</p>
+          <button class="btn btn-secondary" onclick="closeModal()">Guardar Esse Sentimento ✨</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer-text">
+      <p>Feito com todo o carinho do mundo, especialmente para você. ☀️</p>
+      <p class="date-footer">Maio de 2026</p>
+    </footer>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
